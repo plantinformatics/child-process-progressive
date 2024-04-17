@@ -200,58 +200,6 @@ exports.childProcess = (scriptName, postData, useFile, fileName, moreParams, dat
 
 /*----------------------------------------------------------------------------*/
 
-/* 
- * childProcess() was factored out of Dataset.upload() in models/dataset.js
- * The following is the remainder which was not used in childProcess(),
- * i.e. not common, and can replace the use of spawn() there.
- */
-
-/* dataset upload */
-function factored(msg, options, cb) {
-  exports.childProcess('uploadSpreadsheet.bash', msg.data, true, msg.fileName, dataOutUpload, cb, /*progressive*/ false);
-}
-
-// msg file param from API request  {fileName, data, replaceDataset}
-
-// params needed : this (model/dataset), models, options (optionsFromRequest), replaceDataset, uploadParsedTry
-let dataOutUpload = (chunk, cb) => {
-  // data from the standard output is here as buffers
-  // Possibly multiple lines, separated by \n,
-  // completed by \n.
-  const
-  textLines = chunk.toString().split('\n');
-  textLines.forEach((textLine) => {
-    if (textLine !== "") {
-      let [fileName, datasetName] = textLine.split(';');
-      console.log('uploadSpreadsheet stdout data',  "'", fileName,  "', '", datasetName, "'");
-      if (fileName.startsWith('Error:') || ! datasetName) {
-        cb(new Error(fileName + " Dataset '" + datasetName + "'"));
-      } else {
-        console.log('before removeExisting "', datasetName, '"', replaceDataset);
-        this.removeExisting(models, /*options*/undefined, datasetName, replaceDataset, cb, loadAfterDelete);
-      }
-      function loadAfterDelete(err) {
-        if (err) {
-          cb(err);
-        }
-        else {
-          fs.readFile(fileName, (err, jsonData) => {
-            if (err) {
-              cb(err);
-            } else {
-              console.log('readFile', fileName, jsonData.length);
-              // jsonData is a Buffer;  JSON.parse() handles this OK.
-              uploadParsedTry(jsonData);
-            }
-          });
-        }
-      };
-    }
-  });
-};
-
-/*----------------------------------------------------------------------------*/
-
 exports.stringCountString = stringCountString;
 /** Count occurrences of stringSearch in string.
  *

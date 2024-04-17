@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "rm -rf build && mkdir build && rollup -f umd -n child-process-progressive -o dist/child-process-progressive.js -- main.js",
+    "prepare": "rm -rf build && mkdir build && rollup -f cjs -n child-process-progressive -o dist/child-process-progressive.js -- main.js",
     "terminal_reset_style": "bash scripts/terminal_reset_style.bash"
   },
   "repository": {
