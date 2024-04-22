@@ -5,8 +5,8 @@
 /* global process */
 /* global exports */
 
-const { spawn } = require('child_process');
-var fs = require('fs');
+import { spawn } from 'child_process';
+import { writeFile } from 'fs';
 
 //------------------------------------------------------------------------------
 
@@ -36,7 +36,8 @@ const trace = 1;
  * when finished.
  * @return child
  */
-exports.childProcess = (scriptName, postData, useFile, fileName, moreParams, dataOutCb, cb, progressive) => {
+export { childProcess }
+function childProcess(scriptName, postData, useFile, fileName, moreParams, dataOutCb, cb, progressive) {
   const fnName = 'childProcess';
   /** messages from child via file descriptors 3 and 4 are
    * collated in these arrays and can be sent back to provide
@@ -78,7 +79,7 @@ exports.childProcess = (scriptName, postData, useFile, fileName, moreParams, dat
   /** fileName : remove punctuation other than .-_, retain alphanumeric */
   if (useFile) {
     const data = new Uint8Array(Buffer.from(postData, 'binary'));
-    fs.writeFile(fileName, data, (err) => {
+    writeFile(fileName, data, (err) => {
       if (err) {
         cb(err);
       } else {
@@ -200,7 +201,7 @@ exports.childProcess = (scriptName, postData, useFile, fileName, moreParams, dat
 
 /*----------------------------------------------------------------------------*/
 
-exports.stringCountString = stringCountString;
+export { stringCountString }
 /** Count occurrences of stringSearch in string.
  *
  * from : https://stackoverflow.com/a/10671743/18307804, method 3, Lorenz Lo Sauer.
@@ -218,7 +219,7 @@ function stringCountString(string, stringSearch) {
 // -----------------------------------------------------------------------------
 
 
-const { ErrorStatus } = require('./errorStatus.js');
+import { ErrorStatus } from './errorStatus.js';
 
 /** @return a callback wrapping the param cb
  * The signature of the result is function(chunk, cb), which matches param
@@ -232,7 +233,7 @@ const { ErrorStatus } = require('./errorStatus.js');
  * If !progressive then nLines is not effective because dataOutCb receives the
  * combined chunks after child close.
  */
-exports.dataOutReplyClosureLimit = dataOutReplyClosureLimit;
+export { dataOutReplyClosureLimit }
 function dataOutReplyClosureLimit(cb, lineFilter, nLines) {
   let chunks = [];
   let lineCount = 0;
@@ -329,7 +330,8 @@ function dataOutReplyClosureLimit(cb, lineFilter, nLines) {
 
 /** call dataOutReplyClosureLimit() with nLines === undefined.
  */
-exports.dataOutReplyClosure = function dataOutReplyClosure(cb) {
+export { dataOutReplyClosure }
+function dataOutReplyClosure(cb) {
   return exports.dataOutReplyClosureLimit(cb, /*lineFilter*/undefined, /*nLines*/undefined);
 };
 
@@ -338,7 +340,8 @@ exports.dataOutReplyClosure = function dataOutReplyClosure(cb) {
  * undefined (when chunk === null) it returns the summary result, which dataReduce()
  * sends via cb.
  */
-exports.dataReduceClosure = function dataReduceClosure(dataCb) {
+export { dataReduceClosure }
+function dataReduceClosure(dataCb) {
 
   return dataReduce;
 
