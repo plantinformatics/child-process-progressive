@@ -2,7 +2,7 @@
   "name": "@plantinformatics/child-process-progressive",
   "version": "1.0.0",
   "description": "Wrap node child_process, implementing a progressive option for multiple data chunks sent via SSE",
-	"type" : "module",
+  "type": "module",
   "main": "main.js",
   "files": [
     "dist",
@@ -26,6 +26,7 @@
   "author": "Agriculture Victoria / Don Isdale",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
+    "rollup": "^4.14.2",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3"
