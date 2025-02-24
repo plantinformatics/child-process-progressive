@@ -1,9 +1,7 @@
 'use strict';
 
-/* global require */
 /* global Buffer */
 /* global process */
-/* global exports */
 
 import { spawn } from 'child_process';
 import { writeFile } from 'fs';
@@ -181,7 +179,7 @@ function childProcess(scriptName, postData, useFile, fileName, moreParams, dataO
       let
       errors_warnings = errors.concat(warnings).join("\n");
       errors = []; warnings = [];
-      cb(new ErrorStatus(400, errors_warnings));
+      cb(ErrorStatus(400, errors_warnings));
     } else {
       // process each tmp/out_json/"$datasetName".json
       const message = 'Processed file ' + fileName;
@@ -272,7 +270,7 @@ function dataOutReplyClosureLimit(cb, lineFilter, nLines) {
       const text = chunk?.toString();
       // equiv : text?.startsWith('Error:')
       if (chunk && (chunk.length >= 6) && (chunk.asciiSlice(0,6) === 'Error:')) {
-        cb(new ErrorStatus(400, text));
+        cb(ErrorStatus(400, text));
       } else if (! text || (! lineFilter && (nLines === undefined))) {
         cb(null, text);
       } else {
@@ -332,7 +330,7 @@ function dataOutReplyClosureLimit(cb, lineFilter, nLines) {
  */
 export { dataOutReplyClosure }
 function dataOutReplyClosure(cb) {
-  return exports.dataOutReplyClosureLimit(cb, /*lineFilter*/undefined, /*nLines*/undefined);
+  return dataOutReplyClosureLimit(cb, /*lineFilter*/undefined, /*nLines*/undefined);
 };
 
 /** @return a dataOutCb for childProcess()

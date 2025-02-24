@@ -1,6 +1,6 @@
 {
   "name": "@plantinformatics/child-process-progressive",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Wrap node child_process, implementing a progressive option for multiple data chunks sent via SSE",
   "type": "module",
   "main": "main.js",
